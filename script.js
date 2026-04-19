@@ -68,7 +68,7 @@ function updateGifPosition() {
     const INTRO_OFFSET_Y=-175;
 
     const GAME_OFFSET_X=0;
-    const GAME_OFFSET_Y=-30;
+    const GAME_OFFSET_Y=0;
 
 if(introActive){
     introCatImg.style.left=(cat.x+INTRO_OFFSET_X)+'px';
