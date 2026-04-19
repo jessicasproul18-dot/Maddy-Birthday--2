@@ -68,13 +68,4 @@ body {
 #game-wrapper {
     overflow: visible; /* Make sure the cat isn't being 'clipped' off-screen */
 }
-#introCat, #gameCat {
-    /* This overrides the left: 0 default and centers the image */
-    left: 0 !important;
-    top:0 !important;
-    transform: none;
-    transition: none; /* Keeps it snappy */
-}
-#introCat {
-  outline: 3px solid red;
 }
