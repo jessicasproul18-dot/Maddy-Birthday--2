@@ -63,10 +63,21 @@ function typeMessage() {
 function updateGifPosition() {
     introCatImg.style.display = introActive ? 'block' : 'none';
     gameCatImg.style.display = gameActive ? 'block' : 'none';
-    const activeImg = introActive ? introCatImg : gameCatImg;
+    
+    const INTRO_OFFSET_X=-125;
+    const INTRO_OFFSET_Y=-175;
+
+    const GAME_OFFSET_X=0;
+    const GAME_OFFSET_Y=-30;
+
+if(introActive){
+    introCatImg.style.left=(cat.x+INTRO_OFFSET_X)+'px';
+    introCatImg.style.top=(cat.y+INTRO_OFFSET_Y)+'px'
+}
+    
 if(gameActive){
-    activeImg.style.left=cat.x+'px';
-    activeImg.style.top=(cat.y-175)+'px';
+    gameCatImg.style.left=(cat.x+GAME_OFFSET_X)+'px';
+    gameCatImg.style.top=(cat.y+GAME_OFFSET_Y)+'px';
 }
 }
 
