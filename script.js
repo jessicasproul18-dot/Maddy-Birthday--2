@@ -71,13 +71,13 @@ function updateGifPosition() {
     const GAME_OFFSET_Y=0;
 
 if(introActive){
-    introCatImg.style.left=(cat.x+INTRO_OFFSET_X)+'px';
-    introCatImg.style.top=(cat.y+INTRO_OFFSET_Y)+'px'
+    introCatImg.style.left=(cat.x-introCatImg.width/2+INTRO_OFFSET_X)+'px';
+    introCatImg.style.top=(cat.y-introCatImg.height+INTRO_OFFSET_Y)+'px'
 }
     
 if(gameActive){
-    gameCatImg.style.left=(cat.x+GAME_OFFSET_X)+'px';
-    gameCatImg.style.top=(cat.y+GAME_OFFSET_Y)+'px';
+    gameCatImg.style.left=(cat.x-gameCatImg.width/2+GAME_OFFSET_X)+'px';
+    gameCatImg.style.top=(cat.y-gameCatImg.height+GAME_OFFSET_Y)+'px';
 }
 }
 
