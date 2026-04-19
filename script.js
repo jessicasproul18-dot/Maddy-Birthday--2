@@ -61,23 +61,13 @@ function typeMessage() {
 }
 
 function updateGifPosition() {
-    introCatImg.style.display = introActive ? 'block' : 'none';
-    gameCatImg.style.display = gameActive ? 'block' : 'none';
-    
-    const INTRO_OFFSET_X = 0;
-    const INTRO_OFFSET_Y = -120;
-
-    const GAME_OFFSET_X = -50;
-    const GAME_OFFSET_Y = -80;
-
-    if (introActive) {
-        introCatImg.style.left = (cat.x + INTRO_OFFSET_X) + 'px';
-        introCatImg.style.top = (cat.y + INTRO_OFFSET_Y) + 'px';
-    }
+    introCatImg.style.left = "500px";
+    introCatImg.style.top = "50px";
+}
 
     if (gameActive) {
-        gameCatImg.style.left = (cat.x + GAME_OFFSET_X) + 'px';
-        gameCatImg.style.top = (cat.y + GAME_OFFSET_Y) + 'px';
+        gameCatImg.style.left = "500px";
+        gameCatImg.style.top = "50px";
     }
 }
 
