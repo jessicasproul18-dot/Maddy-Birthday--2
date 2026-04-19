@@ -43,7 +43,7 @@ for(let i = 0; i < 5; i++) {
     });
 }
 
-let cat = { x: -100, y: 300, width: 100, height: 80, velocity: 0, gravity: 0.5, jumpStrength: -16, isJumping: false, danceStep: 0 };
+let cat = { x: -100, y: 300, width: 50, height: 50, velocity: 0, gravity: 0.5, jumpStrength: -16, isJumping: false, danceStep: 0 };
 
 // --- LOGIC ---
 function typeMessage() {
@@ -61,14 +61,10 @@ function typeMessage() {
 }
 
 function updateGifPosition() {
-    introCatImg.style.left = "500px";
-    introCatImg.style.top = "25px";
-}
-
-    if (gameActive) {
-        gameCatImg.style.left = "500px";
-        gameCatImg.style.top = "50px";
-    }
+    introCatImg.style.display = introActive ? 'block' : 'none';
+    gameCatImg.style.display = gameActive ? 'block' : 'none';
+    const activeImg = introActive ? introCatImg : gameCatImg;
+    activeImg.style.top = gameActive ? (cat.y - 15) + 'px' : (cat.y - 175) + 'px';
 }
 
 function introLoop() {
@@ -155,6 +151,5 @@ function updateAndDrawConfetti() { confetti.forEach(c => { c.y += c.speed; c.x +
 function drawBackground() { bgDecorations.forEach(bg => { bg.x -= bg.speed; if (bg.x < -50) bg.x = canvas.width + 50; ctx.fillStyle = bg.color; ctx.beginPath(); ctx.ellipse(bg.x, bg.y, bg.size * 0.8, bg.size, 0, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = "rgba(0,0,0,0.2)"; ctx.beginPath(); ctx.moveTo(bg.x, bg.y + bg.size); ctx.lineTo(bg.x, bg.y + bg.size + 20); ctx.stroke(); }); }
 
 typeMessage(); introLoop();
-
 
 
