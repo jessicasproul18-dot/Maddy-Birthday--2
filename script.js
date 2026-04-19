@@ -62,7 +62,7 @@ function typeMessage() {
 
 function updateGifPosition() {
     introCatImg.style.left = "500px";
-    introCatImg.style.top = "50px";
+    introCatImg.style.top = "25px";
 }
 
     if (gameActive) {
