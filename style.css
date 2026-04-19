@@ -75,3 +75,6 @@ body {
     transform: none;
     transition: none; /* Keeps it snappy */
 }
+#introCat {
+  outline: 3px solid red;
+}
