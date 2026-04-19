@@ -60,7 +60,7 @@ function typeMessage() {
     }, 125);
 }
 
-function updateGifPosition() {
+// updateGifPosition();
     introCatImg.style.display = introActive ? 'block' : 'none';
     gameCatImg.style.display = gameActive ? 'block' : 'none';
     
@@ -165,7 +165,6 @@ function updateAndDrawConfetti() { confetti.forEach(c => { c.y += c.speed; c.x +
 function drawBackground() { bgDecorations.forEach(bg => { bg.x -= bg.speed; if (bg.x < -50) bg.x = canvas.width + 50; ctx.fillStyle = bg.color; ctx.beginPath(); ctx.ellipse(bg.x, bg.y, bg.size * 0.8, bg.size, 0, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = "rgba(0,0,0,0.2)"; ctx.beginPath(); ctx.moveTo(bg.x, bg.y + bg.size); ctx.lineTo(bg.x, bg.y + bg.size + 20); ctx.stroke(); }); }
 
 typeMessage(); introLoop();
-introCatImg.style.left = "400px";
-introCatImg.style.top = "50px";
+
 
 
