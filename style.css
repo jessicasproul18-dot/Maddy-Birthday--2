@@ -70,7 +70,8 @@ body {
 }
 #introCat, #gameCat {
     /* This overrides the left: 0 default and centers the image */
-    left: 0
+    left: 0 !important;
+    top:0 !important;
     transform: none;
     transition: none; /* Keeps it snappy */
 }
