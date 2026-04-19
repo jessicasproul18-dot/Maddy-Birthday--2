@@ -43,7 +43,7 @@ for(let i = 0; i < 5; i++) {
     });
 }
 
-let cat = { x: -100, y: 300, width: 50, height: 50, velocity: 0, gravity: 0.5, jumpStrength: -16, isJumping: false, danceStep: 0 };
+let cat = { x: -100, y: 300, width: 100, height: 80, velocity: 0, gravity: 0.5, jumpStrength: -16, isJumping: false, danceStep: 0 };
 
 // --- LOGIC ---
 function typeMessage() {
@@ -64,7 +64,10 @@ function updateGifPosition() {
     introCatImg.style.display = introActive ? 'block' : 'none';
     gameCatImg.style.display = gameActive ? 'block' : 'none';
     const activeImg = introActive ? introCatImg : gameCatImg;
-    activeImg.style.top = gameActive ? (cat.y - 15) + 'px' : (cat.y - 175) + 'px';
+if(gameActive){
+    activeImg.style.left=cat.x+'px';
+    activeImg.style.top=(cat.y-175)+'px';
+}
 }
 
 function introLoop() {
