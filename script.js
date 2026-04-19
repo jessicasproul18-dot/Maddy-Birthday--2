@@ -60,25 +60,25 @@ function typeMessage() {
     }, 125);
 }
 
-// updateGifPosition();
+function updateGifPosition() {
     introCatImg.style.display = introActive ? 'block' : 'none';
     gameCatImg.style.display = gameActive ? 'block' : 'none';
     
-    const INTRO_OFFSET_X=-200;
-    const INTRO_OFFSET_Y=-175;
+    const INTRO_OFFSET_X = -150;
+    const INTRO_OFFSET_Y = -120;
 
-    const GAME_OFFSET_X=0;
-    const GAME_OFFSET_Y=0;
+    const GAME_OFFSET_X = -50;
+    const GAME_OFFSET_Y = -80;
 
-if(introActive){
-    introCatImg.style.left=(cat.x-introCatImg.width/2+INTRO_OFFSET_X)+'px';
-    introCatImg.style.top=(cat.y-introCatImg.height+INTRO_OFFSET_Y)+'px'
-}
-    
-if(gameActive){
-    gameCatImg.style.left=(cat.x-gameCatImg.width/2+GAME_OFFSET_X)+'px';
-    gameCatImg.style.top=(cat.y-gameCatImg.height+GAME_OFFSET_Y)+'px';
-}
+    if (introActive) {
+        introCatImg.style.left = (cat.x + INTRO_OFFSET_X) + 'px';
+        introCatImg.style.top = (cat.y + INTRO_OFFSET_Y) + 'px';
+    }
+
+    if (gameActive) {
+        gameCatImg.style.left = (cat.x + GAME_OFFSET_X) + 'px';
+        gameCatImg.style.top = (cat.y + GAME_OFFSET_Y) + 'px';
+    }
 }
 
 function introLoop() {
