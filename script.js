@@ -78,6 +78,8 @@ if(introActive){
 if(gameActive){
     gameCatImg.style.left=(cat.x-gameCatImg.width/2+GAME_OFFSET_X)+'px';
     gameCatImg.style.top=(cat.y-gameCatImg.height+GAME_OFFSET_Y)+'px';
+    introCatImg.style.left = "300px";
+introCatImg.style.top = "100px";
 }
 }
 
@@ -166,5 +168,4 @@ function drawBackground() { bgDecorations.forEach(bg => { bg.x -= bg.speed; if (
 
 typeMessage(); introLoop();
 
-introCatImg.style.left = "300px";
-introCatImg.style.top = "100px";
+
