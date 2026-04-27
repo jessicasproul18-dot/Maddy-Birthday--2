@@ -18,7 +18,7 @@ body {
     position: relative;
     width: 800px;
     height: 400px;
-    margin: 20px auto; /* Fixed the missing 'px' */
+    margin: 20px auto; /* Shared anchor point for GIFs and Canvas */
 }
 
 #banner-container {
@@ -60,6 +60,4 @@ body {
     position: absolute;
     z-index: 99;
     pointer-events: none;
-    visibility: visible !important;
-    opacity: 1 !important;
 }
