@@ -11,8 +11,11 @@ const saveBtn = document.getElementById('saveBtn');
 canvas.width = 800;
 canvas.height = 400;
 
+// --- DATA ---
 let highScores = JSON.parse(localStorage.getItem('maddyHighScores')) || [
-    { name: "MDY", score: 500 }, { name: "CAT", score: 300 }, { name: "KIT", score: 100 }
+    { name: "MDY", score: 500 },
+    { name: "CAT", score: 300 },
+    { name: "KIT", score: 100 }
 ];
 
 function updateLeaderboardUI() {
@@ -21,6 +24,7 @@ function updateLeaderboardUI() {
     ).join("");
 }
 
+// --- VARIABLES ---
 let gameSpeed = 2;
 let gameActive = false;
 let obstacles = [];
@@ -41,27 +45,24 @@ for(let i = 0; i < 5; i++) {
 
 let cat = { x: -300, y: 300, width: 100, height: 100, velocity: 0, gravity: 0.5, jumpStrength: -16, isJumping: false, danceStep: 0 };
 
+// --- LOGIC ---
 function updateGifPosition() {
     introCatImg.style.display = introActive ? 'block' : 'none';
     gameCatImg.style.display = gameActive ? 'block' : 'none';
+    const activeImg = introActive ? introCatImg : gameCatImg;
     
-    if (introActive) {
-        introCatImg.style.left = cat.x + 'px';
-        introCatImg.style.top = (cat.y - 175) + 'px';
-    } else {
-        gameCatImg.style.left = cat.x + 'px';
-        // -30 moves him significantly lower. If he's still high, try -20.
-        gameCatImg.style.top = (cat.y - 30) + 'px'; 
-    }
+    activeImg.style.left = cat.x + 'px';
+    // Back to -60 for gameCat to sit properly on the ground
+    activeImg.style.top = gameActive ? (cat.y - 60) + 'px' : (cat.y - 175) + 'px';
 }
 
 function introLoop() {
     if (!introActive) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawBackground(); createAndDrawConfetti();
+    drawBackground(); createConfetti(); updateAndDrawConfetti();
     
-    // Stop at 300 to push him further right into the true center
-    if (cat.x < 300) { 
+    // Nudged back to 250 for center alignment with the start button
+    if (cat.x < 250) { 
         cat.x += 3; 
     } else { 
         cat.danceStep += 0.1; 
@@ -71,10 +72,17 @@ function introLoop() {
     animationId = requestAnimationFrame(introLoop);
 }
 
+window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' && !cat.isJumping && gameActive) {
+        cat.velocity = cat.jumpStrength; cat.isJumping = true;
+    }
+});
+
 function spawnObstacle() {
     if (!gameActive) return;
-    obstacles.push({ x: canvas.width, y: 300, width: 50, height: 50 });
-    setTimeout(spawnObstacle, Math.max(800, 1500 - (score / 100)));
+    // Set Y to 320 to match the "feet" floor
+    obstacles.push({ x: canvas.width, y: 320, width: 50, height: 50 });
+    setTimeout(spawnObstacle, Math.max(700, 1500 - (score / 15)));
 }
 
 function gameLoop() {
@@ -91,11 +99,12 @@ function gameLoop() {
         o.x -= gameSpeed; 
         drawCake(o.x, o.y, o.width, o.height);
 
-        if (cat.x + 20 < o.x + o.width && cat.x + cat.width - 20 > o.x &&
+        // Standard collision check
+        if (cat.x < o.x + o.width && cat.x + cat.width > o.x &&
             cat.y < o.y + o.height && cat.y + cat.height > o.y) {
             gameActive = false;
             cancelAnimationFrame(animationId);
-            showGameOver();
+            showGameOver(); // Triggers the screen display
             return;
         }
     }
@@ -103,26 +112,44 @@ function gameLoop() {
     animationId = requestAnimationFrame(gameLoop);
 }
 
-window.addEventListener('keydown', (e) => {
-    if (e.code === 'Space' && !cat.isJumping && gameActive) {
-        cat.velocity = cat.jumpStrength; cat.isJumping = true;
-    }
-});
+function showGameOver() {
+    finalScoreText.innerText = score;
+    updateLeaderboardUI();
+    gameOverScreen.style.display = 'block'; // Makes the white box visible
+}
+
+saveBtn.onclick = function() {
+    let name = initialsInput.value.toUpperCase() || "???";
+    highScores.push({ name: name.substring(0,3), score: score });
+    highScores.sort((a, b) => b.score - a.score);
+    highScores = highScores.slice(0, 3);
+    localStorage.setItem('maddyHighScores', JSON.stringify(highScores));
+    location.reload();
+};
 
 document.getElementById('startButton').onclick = function() {
     introActive = false; gameActive = true;
     this.style.display = 'none'; 
     document.getElementById('banner-container').style.display = 'none';
-    cat.x = 400; // True center for a 100px cat
-    cat.y = 300; 
-    spawnObstacle(); 
-    gameLoop();
+    cat.x = 50; cat.y = 300; 
+    spawnObstacle(); gameLoop();
 };
 
 function drawCake(x, y, w, h) {
-    ctx.fillStyle = "#ff80ab"; ctx.fillRect(x, y, w, h); 
-    ctx.fillStyle = "#f50057"; ctx.fillRect(x, y, w, 5);
+    // Body
+    ctx.fillStyle = "#ff80ab"; ctx.fillRect(x, y + 10, w, h - 10);
+    ctx.fillStyle = "#f50057"; ctx.fillRect(x, y + 10, w, 5);
+    // Candle
+    ctx.fillStyle = "white"; ctx.fillRect(x + w/2 - 2, y - 5, 4, 15);
+    ctx.fillStyle = "yellow"; ctx.beginPath(); ctx.arc(x + w/2, y - 8, 3, 0, Math.PI * 2); ctx.fill();
+    // Decal
+    ctx.fillStyle = "white"; ctx.font = "bold 16px Arial"; ctx.textAlign = "center";
+    ctx.fillText("29", x + w/2, y + h - 10);
 }
+
+function createConfetti() { if (introActive && confetti.length < 50) { confetti.push({ x: Math.random() * canvas.width, y: -10, size: Math.random() * 8 + 4, color: confettiColors[Math.floor(Math.random() * confettiColors.length)], speed: Math.random() * 3 + 1, angle: Math.random() * 6.28 }); } }
+function updateAndDrawConfetti() { confetti.forEach(c => { c.y += c.speed; c.x += Math.sin(c.angle) * 1; ctx.fillStyle = c.color; ctx.fillRect(c.x, c.y, c.size, c.size); if (c.y > canvas.height) { c.y = -10; c.x = Math.random() * canvas.width; } }); }
+function drawBackground() { bgDecorations.forEach(bg => { bg.x -= bg.speed; if (bg.x < -50) bg.x = canvas.width + 50; ctx.fillStyle = bg.color; ctx.beginPath(); ctx.ellipse(bg.x, bg.y, bg.size * 0.8, bg.size, 0, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = "rgba(0,0,0,0.2)"; ctx.beginPath(); ctx.moveTo(bg.x, bg.y + bg.size); ctx.lineTo(bg.x, bg.y + bg.size + 20); ctx.stroke(); }); }
 
 function typeMessage() {
     const typewriter = document.getElementById('typewriter');
@@ -137,32 +164,5 @@ function typeMessage() {
         }
     }, 125);
 }
-
-function createAndDrawConfetti() { 
-    if (introActive && confetti.length < 50) { 
-        confetti.push({ x: Math.random() * canvas.width, y: -10, size: Math.random() * 8 + 4, color: confettiColors[Math.floor(Math.random() * confettiColors.length)], speed: Math.random() * 3 + 1, angle: Math.random() * 6.28 }); 
-    }
-    confetti.forEach(c => { 
-        c.y += c.speed; c.x += Math.sin(c.angle) * 1; 
-        ctx.fillStyle = c.color; ctx.fillRect(c.x, c.y, c.size, c.size); 
-        if (c.y > canvas.height) { c.y = -10; c.x = Math.random() * canvas.width; } 
-    });
-}
-
-function drawBackground() { 
-    bgDecorations.forEach(bg => { 
-        bg.x -= bg.speed; if (bg.x < -50) bg.x = canvas.width + 50; 
-        ctx.fillStyle = bg.color; ctx.beginPath(); ctx.ellipse(bg.x, bg.y, bg.size * 0.8, bg.size, 0, 0, Math.PI * 2); ctx.fill(); 
-    }); 
-}
-
-saveBtn.onclick = function() {
-    let name = initialsInput.value.toUpperCase() || "???";
-    highScores.push({ name: name.substring(0,3), score: score });
-    highScores.sort((a, b) => b.score - a.score);
-    highScores = highScores.slice(0, 3);
-    localStorage.setItem('maddyHighScores', JSON.stringify(highScores));
-    location.reload();
-};
 
 typeMessage(); introLoop();
