@@ -72,7 +72,7 @@ function introLoop() {
     if (!introActive) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBackground(); createConfetti(); updateAndDrawConfetti();
-    if (cat.x < 175) { cat.x += 3; } else { cat.danceStep += 0.1; cat.y = 300 + Math.sin(cat.danceStep) * 15; }
+    if (cat.x < 350) { cat.x += 3; } else { cat.danceStep += 0.1; cat.y = 300 + Math.sin(cat.danceStep) * 15; }
     updateGifPosition();
     animationId = requestAnimationFrame(introLoop);
 }
@@ -136,7 +136,7 @@ saveBtn.onclick = function() {
 document.getElementById('startButton').onclick = function() {
     introActive = false; gameActive = true;
     this.style.display = 'none'; document.getElementById('banner-container').style.display = 'none';
-    cat.x = 50; cat.y = 300; spawnObstacle(); gameLoop();
+    cat.x = 350; cat.y = 300; spawnObstacle(); gameLoop();
 };
 
 function drawCake(x, y, w, h) {
