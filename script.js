@@ -92,7 +92,7 @@ function gameLoop() {
     if (!gameActive) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBackground();
-    gameSpeed += 0.002; 
+    gameSpeed += 0.0005; 
     cat.velocity += cat.gravity; cat.y += cat.velocity;
     if (cat.y > 300) { cat.y = 300; cat.isJumping = false; cat.velocity = 0; }
     updateGifPosition();
