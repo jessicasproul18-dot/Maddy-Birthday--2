@@ -65,14 +65,14 @@ function updateGifPosition() {
     gameCatImg.style.display = gameActive ? 'block' : 'none';
     const activeImg = introActive ? introCatImg : gameCatImg;
     activeImg.style.left = cat.x + 'px';
-    activeImg.style.top = gameActive ? (cat.y - 50) + 'px' : (cat.y - 175) + 'px';
+    activeImg.style.top = gameActive ? (cat.y - 60) + 'px' : (cat.y - 175) + 'px';
 }
 
 function introLoop() {
     if (!introActive) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBackground(); createConfetti(); updateAndDrawConfetti();
-    if (cat.x < 350) { cat.x += 3; } else { cat.danceStep += 0.1; cat.y = 300 + Math.sin(cat.danceStep) * 15; }
+    if (cat.x < 175) { cat.x += 3; } else { cat.danceStep += 0.1; cat.y = 300 + Math.sin(cat.danceStep) * 15; }
     updateGifPosition();
     animationId = requestAnimationFrame(introLoop);
 }
@@ -85,7 +85,7 @@ window.addEventListener('keydown', (e) => {
 
 function spawnObstacle() {
     if (!gameActive) return;
-    obstacles.push({ x: canvas.width, y: 300, width: 50, height: 50 });
+    obstacles.push({ x: canvas.width, y: 320, width: 50, height: 50 });
     setTimeout(spawnObstacle, Math.max(700, 1500 - (score / 15)));
 }
 
@@ -104,7 +104,7 @@ function gameLoop() {
         drawCake(o.x, o.y, o.width, o.height);
 
        if (cat.x < o.x + o.width && cat.x + cat.width > o.x &&
-    cat.y < o.y + o.height && cat.y + 50 > o.y) {
+    cat.y < o.y + o.height && cat.y + cat.height > o.y) {
             
             gameActive = false;
             cancelAnimationFrame(animationId);
@@ -136,12 +136,12 @@ saveBtn.onclick = function() {
 document.getElementById('startButton').onclick = function() {
     introActive = false; gameActive = true;
     this.style.display = 'none'; document.getElementById('banner-container').style.display = 'none';
-    cat.x = 350; cat.y = 300; spawnObstacle(); gameLoop();
+    cat.x = 50; cat.y = 300; spawnObstacle(); gameLoop();
 };
 
 function drawCake(x, y, w, h) {
-    ctx.fillStyle = "#ff80ab"; ctx.fillRect(x, y, w, h);
-    ctx.fillStyle = "#f50057"; ctx.fillRect(x, y, w, 5);
+    ctx.fillStyle = "#ff80ab"; ctx.fillRect(x, y + 10, w, h - 10);
+    ctx.fillStyle = "#f50057"; ctx.fillRect(x, y + 10, w, 5);
     ctx.fillStyle = "white"; ctx.font = "bold 16px Arial"; ctx.textAlign = "center";
     ctx.fillText("29", x + w/2, y + h - 10);
     ctx.fillStyle = "white"; ctx.fillRect(x + w/2 - 2, y - 5, 4, 15);
