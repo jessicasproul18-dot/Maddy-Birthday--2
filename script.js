@@ -11,11 +11,8 @@ const saveBtn = document.getElementById('saveBtn');
 canvas.width = 800;
 canvas.height = 400;
 
-// --- DATA ---
 let highScores = JSON.parse(localStorage.getItem('maddyHighScores')) || [
-    { name: "MDY", score: 500 },
-    { name: "CAT", score: 300 },
-    { name: "KIT", score: 100 }
+    { name: "MDY", score: 500 }, { name: "CAT", score: 300 }, { name: "KIT", score: 100 }
 ];
 
 function updateLeaderboardUI() {
@@ -24,7 +21,6 @@ function updateLeaderboardUI() {
     ).join("");
 }
 
-// --- VARIABLES ---
 let gameSpeed = 2;
 let gameActive = false;
 let obstacles = [];
@@ -45,38 +41,27 @@ for(let i = 0; i < 5; i++) {
 
 let cat = { x: -300, y: 300, width: 100, height: 100, velocity: 0, gravity: 0.5, jumpStrength: -16, isJumping: false, danceStep: 0 };
 
-// --- LOGIC ---
-function typeMessage() {
-    const typewriter = document.getElementById('typewriter');
-    const msg = "Happy Birthday Maddy! 🎂";
-    let i = 0;
-    const interval = setInterval(() => {
-        typewriter.innerHTML += msg.charAt(i);
-        i++;
-        if (i >= msg.length) {
-            clearInterval(interval);
-            document.getElementById('startButton').style.display = 'inline-block';
-        }
-    }, 125);
-}
-
 function updateGifPosition() {
     introCatImg.style.display = introActive ? 'block' : 'none';
     gameCatImg.style.display = gameActive ? 'block' : 'none';
-    const activeImg = introActive ? introCatImg : gameCatImg;
     
-    activeImg.style.left = cat.x + 'px';
-    // Adjusted y-offset (-45) so cat sits lower on the new shorter cakes
-    activeImg.style.top = gameActive ? (cat.y - 45) + 'px' : (cat.y - 175) + 'px';
+    if (introActive) {
+        introCatImg.style.left = cat.x + 'px';
+        introCatImg.style.top = (cat.y - 175) + 'px';
+    } else {
+        gameCatImg.style.left = cat.x + 'px';
+        // -30 moves him significantly lower. If he's still high, try -20.
+        gameCatImg.style.top = (cat.y - 30) + 'px'; 
+    }
 }
 
 function introLoop() {
     if (!introActive) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawBackground(); createConfetti(); updateAndDrawConfetti();
+    drawBackground(); createAndDrawConfetti();
     
-    // Stop at 250 to align perfectly with the Start Button center
-    if (cat.x < 250) { 
+    // Stop at 300 to push him further right into the true center
+    if (cat.x < 300) { 
         cat.x += 3; 
     } else { 
         cat.danceStep += 0.1; 
@@ -86,16 +71,9 @@ function introLoop() {
     animationId = requestAnimationFrame(introLoop);
 }
 
-window.addEventListener('keydown', (e) => {
-    if (e.code === 'Space' && !cat.isJumping && gameActive) {
-        cat.velocity = cat.jumpStrength; cat.isJumping = true;
-    }
-});
-
 function spawnObstacle() {
     if (!gameActive) return;
-    // Cake is now 40px tall and spawns slightly lower (310) for easier jumps
-    obstacles.push({ x: canvas.width, y: 310, width: 50, height: 40 });
+    obstacles.push({ x: canvas.width, y: 300, width: 50, height: 50 });
     setTimeout(spawnObstacle, Math.max(800, 1500 - (score / 100)));
 }
 
@@ -113,8 +91,7 @@ function gameLoop() {
         o.x -= gameSpeed; 
         drawCake(o.x, o.y, o.width, o.height);
 
-        // Fairer hitbox for the shorter cakes
-        if (cat.x + 30 < o.x + o.width && cat.x + cat.width - 30 > o.x &&
+        if (cat.x + 20 < o.x + o.width && cat.x + cat.width - 20 > o.x &&
             cat.y < o.y + o.height && cat.y + cat.height > o.y) {
             gameActive = false;
             cancelAnimationFrame(animationId);
@@ -126,10 +103,57 @@ function gameLoop() {
     animationId = requestAnimationFrame(gameLoop);
 }
 
-function showGameOver() {
-    finalScoreText.innerText = score;
-    updateLeaderboardUI();
-    gameOverScreen.style.display = 'block';
+window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' && !cat.isJumping && gameActive) {
+        cat.velocity = cat.jumpStrength; cat.isJumping = true;
+    }
+});
+
+document.getElementById('startButton').onclick = function() {
+    introActive = false; gameActive = true;
+    this.style.display = 'none'; 
+    document.getElementById('banner-container').style.display = 'none';
+    cat.x = 400; // True center for a 100px cat
+    cat.y = 300; 
+    spawnObstacle(); 
+    gameLoop();
+};
+
+function drawCake(x, y, w, h) {
+    ctx.fillStyle = "#ff80ab"; ctx.fillRect(x, y, w, h); 
+    ctx.fillStyle = "#f50057"; ctx.fillRect(x, y, w, 5);
+}
+
+function typeMessage() {
+    const typewriter = document.getElementById('typewriter');
+    const msg = "Happy Birthday Maddy! 🎂";
+    let i = 0;
+    const interval = setInterval(() => {
+        typewriter.innerHTML += msg.charAt(i);
+        i++;
+        if (i >= msg.length) {
+            clearInterval(interval);
+            document.getElementById('startButton').style.display = 'inline-block';
+        }
+    }, 125);
+}
+
+function createAndDrawConfetti() { 
+    if (introActive && confetti.length < 50) { 
+        confetti.push({ x: Math.random() * canvas.width, y: -10, size: Math.random() * 8 + 4, color: confettiColors[Math.floor(Math.random() * confettiColors.length)], speed: Math.random() * 3 + 1, angle: Math.random() * 6.28 }); 
+    }
+    confetti.forEach(c => { 
+        c.y += c.speed; c.x += Math.sin(c.angle) * 1; 
+        ctx.fillStyle = c.color; ctx.fillRect(c.x, c.y, c.size, c.size); 
+        if (c.y > canvas.height) { c.y = -10; c.x = Math.random() * canvas.width; } 
+    });
+}
+
+function drawBackground() { 
+    bgDecorations.forEach(bg => { 
+        bg.x -= bg.speed; if (bg.x < -50) bg.x = canvas.width + 50; 
+        ctx.fillStyle = bg.color; ctx.beginPath(); ctx.ellipse(bg.x, bg.y, bg.size * 0.8, bg.size, 0, 0, Math.PI * 2); ctx.fill(); 
+    }); 
 }
 
 saveBtn.onclick = function() {
@@ -140,30 +164,5 @@ saveBtn.onclick = function() {
     localStorage.setItem('maddyHighScores', JSON.stringify(highScores));
     location.reload();
 };
-
-document.getElementById('startButton').onclick = function() {
-    introActive = false; gameActive = true;
-    this.style.display = 'none'; document.getElementById('banner-container').style.display = 'none';
-    cat.x = 350; // Starts the game centered where the button is
-    cat.y = 300; spawnObstacle(); gameLoop();
-};
-
-function drawCake(x, y, w, h) {
-    // Cake Body
-    ctx.fillStyle = "#ff80ab"; ctx.fillRect(x, y, w, h); 
-    ctx.fillStyle = "#f50057"; ctx.fillRect(x, y, w, 5);
-    
-    // Candle - Elevated so it sits on top
-    ctx.fillStyle = "white"; ctx.fillRect(x + w/2 - 2, y - 15, 4, 15);
-    ctx.fillStyle = "yellow"; ctx.beginPath(); ctx.arc(x + w/2, y - 18, 3, 0, Math.PI * 2); ctx.fill();
-    
-    // "29" Text
-    ctx.fillStyle = "white"; ctx.font = "bold 14px Arial"; ctx.textAlign = "center";
-    ctx.fillText("29", x + w/2, y + h - 10);
-}
-
-function createConfetti() { if (introActive && confetti.length < 50) { confetti.push({ x: Math.random() * canvas.width, y: -10, size: Math.random() * 8 + 4, color: confettiColors[Math.floor(Math.random() * confettiColors.length)], speed: Math.random() * 3 + 1, angle: Math.random() * 6.28 }); } }
-function updateAndDrawConfetti() { confetti.forEach(c => { c.y += c.speed; c.x += Math.sin(c.angle) * 1; ctx.fillStyle = c.color; ctx.fillRect(c.x, c.y, c.size, c.size); if (c.y > canvas.height) { c.y = -10; c.x = Math.random() * canvas.width; } }); }
-function drawBackground() { bgDecorations.forEach(bg => { bg.x -= bg.speed; if (bg.x < -50) bg.x = canvas.width + 50; ctx.fillStyle = bg.color; ctx.beginPath(); ctx.ellipse(bg.x, bg.y, bg.size * 0.8, bg.size, 0, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = "rgba(0,0,0,0.2)"; ctx.beginPath(); ctx.moveTo(bg.x, bg.y + bg.size); ctx.lineTo(bg.x, bg.y + bg.size + 20); ctx.stroke(); }); }
 
 typeMessage(); introLoop();
