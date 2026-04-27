@@ -51,7 +51,7 @@ body {
     position: relative; /* This is the 'anchor' for the GIFs */
     width: 800px;
     height: 400px;
-    margin: 0 auto;
+    margin: 20 auto;
 }
 
 #introCat, #gameCat {
