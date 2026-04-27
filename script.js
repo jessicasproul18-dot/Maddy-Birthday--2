@@ -85,7 +85,7 @@ window.addEventListener('keydown', (e) => {
 
 function spawnObstacle() {
     if (!gameActive) return;
-    obstacles.push({ x: canvas.width, y: 320, width: 50, height: 50 });
+    obstacles.push({ x: canvas.width, y: 300, width: 50, height: 50 });
     setTimeout(spawnObstacle, Math.max(700, 1500 - (score / 15)));
 }
 
