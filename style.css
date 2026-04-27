@@ -63,14 +63,10 @@ body {
     pointer-events: none; /* Let clicks pass through to the game */
     visibility: visible !important;
     opacity: 1 !important;
+    position: absolute;
 }
 
 #game-wrapper {
     overflow: visible; /* Make sure the cat isn't being 'clipped' off-screen */
 }
-#introCat, #gameCat {
-    /* This overrides the left: 0 default and centers the image */
-    left: 50% !important;
-    transform: translateX(-50%);
-    transition: none; /* Keeps it snappy */
-}
+
