@@ -1,20 +1,19 @@
 body {
     text-align: center;
-    background-color: #ffebee; /* Soft birthday pink */
-    font-family: 'Courier New', Courier, monospace; /* Vintage vibe */
+    background-color: #ffebee;
+    font-family: 'Courier New', Courier, monospace;
     overflow: hidden;
     margin: 0;
     padding: 0;
 }
 
 #gameCanvas {
-    background-color: #f2e2ec; /* Cream color */
-    border-bottom: 4px solid #8d6e63; /* Brown "ground" line */
+    background-color: #f2e2ec;
+    border-bottom: 4px solid #8d6e63;
     display: block;
     margin: 0 auto;
 }
 
-/* The Slanted Banner */
 #banner-container {
     position: absolute;
     width: 100%;
@@ -41,10 +40,9 @@ body {
 #startButton {
     padding: 15px 30px;
     font-size: 20px;
-    background-color: #4caf50; /* Green "Go" button */
+    background-color: #4caf50;
     color: white;
     border: 4px solid #2e7d32;
-    border-radius: 0px; /* Square/Retro look */
     cursor: pointer;
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
@@ -52,21 +50,18 @@ body {
 }
 
 #game-wrapper {
-    position: relative; /* Anchor for the GIFs */
+    position: relative;
     width: 800px;
     height: 400px;
-    margin: 20px auto; /* Centered with a little breathing room at the top */
-    padding: 0;
+    margin: 20px auto;
 }
 
 #introCat, #gameCat {
     position: absolute;
     z-index: 99;
     pointer-events: none;
-    display: block; /* Removes the hidden 5px gap at the bottom of images */
 }
 
-/* Game Over Screen Styling */
 #gameOverScreen {
     position: absolute;
     top: 50%;
@@ -80,22 +75,4 @@ body {
     z-index: 200;
     font-family: Arial;
     box-shadow: 0 0 20px rgba(0,0,0,0.2);
-}
-
-#initialsInput {
-    width: 80px;
-    text-align: center;
-    font-size: 20px;
-    margin-bottom: 10px;
-    border: 2px solid #4caf50;
-}
-
-#saveBtn {
-    padding: 10px 20px;
-    background: #4caf50;
-    border: none;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
 }
