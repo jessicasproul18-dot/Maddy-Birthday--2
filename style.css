@@ -1,18 +1,26 @@
 body {
     text-align: center;
-    background-color: #ffebee; /* Soft birthday pink */
-    font-family: 'Courier New', Courier, monospace; /* Vintage vibe */
+    background-color: #ffebee;
+    font-family: 'Courier New', Courier, monospace;
     overflow: hidden;
+    margin: 0;
+    padding: 0;
 }
 
 #gameCanvas {
-    background-color: #f2e2ec; /* Cream color */
-    border-bottom: 4px solid #8d6e63; /* Brown "ground" line */
+    background-color: #f2e2ec;
+    border-bottom: 4px solid #8d6e63;
     display: block;
-    margin: 0px auto;
+    margin: 0 auto;
 }
 
-/* The Slanted Banner */
+#game-wrapper {
+    position: relative;
+    width: 800px;
+    height: 400px;
+    margin: 20px auto; /* Fixed the missing 'px' */
+}
+
 #banner-container {
     position: absolute;
     width: 100%;
@@ -39,34 +47,19 @@ body {
 #startButton {
     padding: 15px 30px;
     font-size: 20px;
-    background-color: #4caf50; /* Green "Go" button */
+    background-color: #4caf50;
     color: white;
     border: 4px solid #2e7d32;
-    border-radius: 0px; /* Square/Retro look */
     cursor: pointer;
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
-}
-#game-wrapper {
-    position: relative; /* This is the 'anchor' for the GIFs */
-    width: 800px;
-    height: 400px;
-    margin: 20 auto;
+    margin-top: 10px;
 }
 
 #introCat, #gameCat {
-    position: absolute; /* This lets them move freely inside the wrapper */
-    z-index: 99;       /* This pulls them in front of the canvas */
-    pointer-events: none; /* Keeps clicks going to the button/game */
-}
-#introCat, #gameCat {
-    pointer-events: none; /* Let clicks pass through to the game */
+    position: absolute;
+    z-index: 99;
+    pointer-events: none;
     visibility: visible !important;
     opacity: 1 !important;
-    position: absolute;
 }
-
-#game-wrapper {
-    overflow: visible; /* Make sure the cat isn't being 'clipped' off-screen */
-}
-
