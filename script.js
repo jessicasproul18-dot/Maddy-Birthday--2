@@ -65,7 +65,7 @@ function updateGifPosition() {
     gameCatImg.style.display = gameActive ? 'block' : 'none';
     const activeImg = introActive ? introCatImg : gameCatImg;
     activeImg.style.left = cat.x + 'px';
-    activeImg.style.top = gameActive ? (cat.y - 30) + 'px' : (cat.y - 175) + 'px';
+    activeImg.style.top = gameActive ? (cat.y - 60) + 'px' : (cat.y - 175) + 'px';
 }
 
 function introLoop() {
