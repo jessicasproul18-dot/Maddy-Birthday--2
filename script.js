@@ -41,7 +41,7 @@ for(let i = 0; i < 5; i++) {
     });
 }
 
-// x: -300 ensures the large intro GIF starts fully off-screen
+// x: -300 ensures the 300px intro cat starts fully off-screen
 let cat = { x: -300, y: 300, width: 100, height: 100, velocity: 0, gravity: 0.5, jumpStrength: -16, isJumping: false, danceStep: 0 };
 
 function typeMessage() {
@@ -63,14 +63,12 @@ function updateGifPosition() {
     gameCatImg.style.display = gameActive ? 'block' : 'none';
     
     if (introActive) {
-        // 250 (cat.x target) + 150 (half of 300px width) = 400 (Center)
         introCatImg.style.left = cat.x + 'px';
         introCatImg.style.top = (cat.y - 175) + 'px';
     } else {
-        // 350 (cat.x target) + 50 (half of 100px width) = 400 (Center)
         gameCatImg.style.left = cat.x + 'px';
-        // -60 aligns the feet to the cake top; adjust to -50 or -70 if needed for GIF whitespace
-        gameCatImg.style.top = (cat.y - 60) + 'px';
+        // Changed to -40 to bring the cat's feet DOWN onto the cakes
+        gameCatImg.style.top = (cat.y - 40) + 'px'; 
     }
 }
 
@@ -79,8 +77,8 @@ function introLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBackground(); createAndDrawConfetti();
     
-    // Stop at 250 so the 300px wide GIF is centered at 400px
-    if (cat.x < 250) { 
+    // Changed to 280 to nudge the intro cat more to the right for visual centering
+    if (cat.x < 280) { 
         cat.x += 3; 
     } else { 
         cat.danceStep += 0.1; 
@@ -98,7 +96,7 @@ window.addEventListener('keydown', (e) => {
 
 function spawnObstacle() {
     if (!gameActive) return;
-    // Spawn at 300 to match the cat's floor exactly
+    // Floor is at 300
     obstacles.push({ x: canvas.width, y: 300, width: 50, height: 50 });
     setTimeout(spawnObstacle, Math.max(700, 1500 - (score / 15)));
 }
@@ -117,7 +115,7 @@ function gameLoop() {
         o.x -= gameSpeed; 
         drawCake(o.x, o.y, o.width, o.height);
 
-        // Collision logic using the shared '300' floor
+        // Hitbox check matches the visual 300 ground line
         if (cat.x < o.x + o.width && cat.x + cat.width > o.x &&
             cat.y < o.y + o.height && cat.y + cat.height > o.y) {
             gameActive = false;
@@ -149,14 +147,14 @@ document.getElementById('startButton').onclick = function() {
     introActive = false; gameActive = true;
     this.style.display = 'none'; 
     document.getElementById('banner-container').style.display = 'none';
-    // Start at 350 so the 100px wide GIF is centered at 400px
-    cat.x = 350; cat.y = 300; 
+    // Starting at 380 keeps him visually centered when the game begins
+    cat.x = 380; cat.y = 300; 
     spawnObstacle(); 
     gameLoop();
 };
 
 function drawCake(x, y, w, h) {
-    ctx.fillStyle = "#ff80ab"; ctx.fillRect(x, y, w, h); // Removed +10 offset
+    ctx.fillStyle = "#ff80ab"; ctx.fillRect(x, y, w, h); 
     ctx.fillStyle = "#f50057"; ctx.fillRect(x, y, w, 5);
     ctx.fillStyle = "white"; ctx.font = "bold 16px Arial"; ctx.textAlign = "center";
     ctx.fillText("29", x + w/2, y + h - 10);
@@ -184,5 +182,3 @@ function drawBackground() {
 }
 
 typeMessage(); introLoop();
-
-
