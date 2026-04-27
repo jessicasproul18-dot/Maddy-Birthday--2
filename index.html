@@ -11,8 +11,7 @@
         </div>
     </div>
 
-    <div id="game-wrapper" style="position: relative; width: 100%; max-width: 800px; margin: 0 auto;">
-        
+    <div id="game-wrapper">
         <div id="gameOverScreen" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 4px solid #ff80ab; border-radius: 15px; text-align: center; z-index: 200; font-family: Arial; box-shadow: 0 0 20px rgba(0,0,0,0.2);">
             <h2 style="color: #f50057;">Happy Birthday Maddy! 🎂</h2>
             <p>Your Score: <span id="finalScore">0</span></p>
@@ -22,13 +21,9 @@
             <div id="leaderboardList"></div>
         </div>
 
-        <img id="introCat" src="intro.gif" 
-             style="position: absolute; width: 300px; z-index: 5; display: block;">
-
-        <img id="gameCat" src="run.gif" 
-             style="position: absolute; width: 100px; z-index: 5; display: none;">
-
-        <canvas id="gameCanvas" style="position: relative; z-index: 1;"></canvas>
+        <img id="introCat" src="intro.gif" style="width: 300px; display: block;">
+        <img id="gameCat" src="run.gif" style="width: 100px; display: none;">
+        <canvas id="gameCanvas"></canvas>
     </div>
 
     <button id="startButton" style="display: none;">Start Game!</button>
