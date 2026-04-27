@@ -65,7 +65,7 @@ function updateGifPosition() {
     gameCatImg.style.display = gameActive ? 'block' : 'none';
     const activeImg = introActive ? introCatImg : gameCatImg;
     activeImg.style.left = cat.x + 'px';
-    activeImg.style.top = gameActive ? (cat.y - 100) + 'px' : (cat.y - 175) + 'px';
+    activeImg.style.top = gameActive ? (cat.y - 50) + 'px' : (cat.y - 175) + 'px';
 }
 
 function introLoop() {
@@ -104,7 +104,7 @@ function gameLoop() {
         drawCake(o.x, o.y, o.width, o.height);
 
        if (cat.x < o.x + o.width && cat.x + cat.width > o.x &&
-    cat.y < o.y + o.height && cat.y + cat.height > o.y) {
+    cat.y < o.y + o.height && cat.y + 50 > o.y) {
             
             gameActive = false;
             cancelAnimationFrame(animationId);
@@ -140,8 +140,8 @@ document.getElementById('startButton').onclick = function() {
 };
 
 function drawCake(x, y, w, h) {
-    ctx.fillStyle = "#ff80ab"; ctx.fillRect(x, y + 10, w, h - 10);
-    ctx.fillStyle = "#f50057"; ctx.fillRect(x, y + 10, w, 5);
+    ctx.fillStyle = "#ff80ab"; ctx.fillRect(x, y, w, h);
+    ctx.fillStyle = "#f50057"; ctx.fillRect(x, y, w, 5);
     ctx.fillStyle = "white"; ctx.font = "bold 16px Arial"; ctx.textAlign = "center";
     ctx.fillText("29", x + w/2, y + h - 10);
     ctx.fillStyle = "white"; ctx.fillRect(x + w/2 - 2, y - 5, 4, 15);
